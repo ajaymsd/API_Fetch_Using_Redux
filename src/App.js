@@ -1,24 +1,35 @@
-import logo from './logo.svg';
 import './App.css';
+import {useSelector,useDispatch} from "react-redux"
+import { getUsers } from './redux/Users';
+import { useEffect } from 'react';
 
 function App() {
+  const {users,loading}=useSelector((state)=>state.users);
+  const dispatch=useDispatch();
+  useEffect(()=>{
+      dispatch(getUsers());
+  },[])
+  if(loading){
+    return <h1>Loading....</h1>
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App mt-5 container">
+      <h1 className='text-light'>API FETCH USING createAsyncThunk</h1>
+    <div className=" row p-5 justify-content-around" >
+    {users.map(u=>(
+      
+      <div className=" col-lg-4 bg-white card p-5  ">
+        <h4>#{u.id}</h4>
+        <h4>{u.name}</h4>
+        <p>{u.email}</p>
+        <p>{u.phone}</p>
+        <p>{u.address.city}</p>
+
+      </div>
+    ))}
     </div>
+    </div>
+    
   );
 }
 
